@@ -18,12 +18,20 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Close mobile menu when clicking on a link
     const navLinksItems = document.querySelectorAll('.nav-links ul li a');
-    navLinksItems.forEach(link => {
-        link.addEventListener('click', function() {
-            navLinks.classList.remove('active');
-            navToggle.classList.remove('active');
-            body.style.overflow = 'auto';
-        });
+    const logoLink = document.querySelector('.logo-link');
+    const footerLinks = document.querySelectorAll('.footer-nav a');
+    
+    // Add logo link and footer links to smooth scrolling
+    const allNavLinks = [...navLinksItems, logoLink, ...footerLinks];
+    
+    allNavLinks.forEach(link => {
+        if (link) {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+                navToggle.classList.remove('active');
+                body.style.overflow = 'auto';
+            });
+        }
     });
     
     // Close menu when clicking outside
@@ -35,20 +43,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Smooth scrolling for navigation links
-    navLinksItems.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            if (targetSection) {
-                const offsetTop = targetSection.offsetTop - 80; // Account for fixed header
-                window.scrollTo({
-                    top: offsetTop,
-                    behavior: 'smooth'
-                });
-            }
-        });
+    // Smooth scrolling for all navigation links (including logo)
+    allNavLinks.forEach(link => {
+        if (link) {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    const offsetTop = targetSection.offsetTop - 80; // Account for fixed header
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        }
     });
 });
 
@@ -88,7 +98,6 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
     })
     .then(response => {
         if (response.ok) {
-            alert('✅ Message sent successfully!');
             document.getElementById('contact-form').reset();
         } else {
             throw new Error('Formspree failed');
@@ -98,7 +107,6 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
         // Fallback to mailto
         console.log('Using mailto fallback');
         window.location.href = mailtoLink;
-        alert('📧 Opening your email client to send the message...');
         document.getElementById('contact-form').reset();
     })
     .finally(() => {
