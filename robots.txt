@@ -1,7 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://imohdsakib.github.io/My_Portfolio/sitemap.xml
-
-# Prevent confusion with domain suggestions
-# Official URL: https://imohdsakib.github.io/My_Portfolio
